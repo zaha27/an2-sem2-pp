@@ -23,7 +23,84 @@ def press(num):
 
 
 # Function to evaluate the final expression
+
+#stiva pentru stocarea operanzilor si operatorilor
+#e nevoie pentru ca in cerinta scrie: explicit
+#facem stiva pentru ca sa inlocuim dependenta algoritimului de a folosi functia eval, din python
+class Node:
+    def __init__(self, x):
+        self.data = x
+        self.next = None
+
+class Stack:
+    def __init__(self):
+        self.head = None
+
+    def push(self, value):
+        nod = Node(value)
+        nod.next = self.head
+        self.head = nod
+
+    def pop(self): #doar sterge
+        if self.head is not None:
+            self.head = self.head.next
+
+    def top(self): #doar citeste varfu stivei
+        return self.head.data
+
+def seteaza_prioritatea(char):
+    if char == '+' or char == '-':
+        return 1
+    if char == '*' or char == '/':
+        return 2
+    if char == '(':
+        return 0
+    return None
+
+def calculeaza(stiva_operanzi, stiva_operatori):
+    b = stiva_operanzi.top()
+    stiva_operanzi.pop()
+
+    a = stiva_operanzi.top()
+    stiva_operanzi.pop()
+
+    operatie =  stiva_operatori.top()
+    stiva_operatori.pop()
+
+    de_adaugat = None
+    if operatie == '+':
+        de_adaugat = a + b
+    if operatie == '-':
+        de_adaugat = a - b
+    if operatie == '*':
+        de_adaugat = a * b
+    if operatie == '/':
+        de_adaugat = a / b
+
+    stiva_operanzi.push(de_adaugat)
+
+
+def evalueaza(expression):
+    # doua stive pentru fiecare, folosim stack ul creat mai sus
+    stiva_operanzi = Stack()
+    stiva_operatori = Stack()
+
+
+    i = 0
+    while i < len(expression):
+        caracter_curent = expression[i]
+
+        if caracter_curent.isdigit():
+            stiva_operanzi.push(caracter_curent)
+        elif caracter_curent == '('
+
+        i = i + 1
+
+
+
+
 def equalpress():
+
     # Try and except statement is used
     # for handling the errors like zero
     # division error etc.
@@ -38,7 +115,8 @@ def equalpress():
         # and str function convert the result
         # into string
         total = str(eval(expression))
-
+    #eval deja face ce este propus in laborator asa ca voi implementa o functie alternativa evalueaza
+        #total = str(evalueaza(expression))
         equation.set(total)
 
 
